@@ -9,7 +9,7 @@ const FILTERS = [
 
 export function TaskFilters({ value, onChange }) {
   return (
-    <div className="inline-flex gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 rounded-xl border border-slate-200 bg-slate-100 p-1">
       {FILTERS.map((filter) => {
         const selected = value === filter.value;
         return (

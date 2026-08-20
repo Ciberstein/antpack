@@ -15,7 +15,7 @@ export function MetricsCards({ metrics }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5">
       {cards.map((card) => (
         <div key={card.label} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
           <p className="text-sm text-gray-500">{card.label}</p>
