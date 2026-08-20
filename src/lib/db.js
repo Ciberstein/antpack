@@ -5,7 +5,13 @@
 // No usamos una base de datos real (SQLite/Postgres) para mantener el
 // prototipo simple, tal como permite el enunciado ("puedes usar datos en
 // memoria o una base de datos ligera").
-
+//
+// Detalle importante: en modo desarrollo, Next.js recarga los módulos del
+// servidor cada vez que guardas un archivo (hot reload). Si guardáramos las
+// tareas en una variable normal (`let tasks = [...]`), esa variable se
+// reiniciaría en cada recarga y perderías las tareas creadas. Por eso
+// guardamos el estado dentro de `globalThis`, que persiste entre recargas
+// porque vive fuera del módulo.
 
 const STATUSES = ["pending", "in_progress", "completed"];
 const PRIORITIES = ["low", "medium", "high"];
@@ -74,9 +80,12 @@ globalThis.__taskStore = store;
  * la ruta que llama a esta función pueda responder con un error 400.
  */
 export function getTasks(status) {
-  if (!status) return store.tasks;
-  if (!STATUSES.includes(status)) return null;
-  return store.tasks.filter((task) => task.status === status);
+  if (status && !STATUSES.includes(status)) return null;
+
+  const tasks = status ? store.tasks.filter((task) => task.status === status) : [...store.tasks];
+
+  // Más recientes primero
+  return tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
 export function getTaskById(id) {
